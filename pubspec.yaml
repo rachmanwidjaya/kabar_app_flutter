@@ -1,0 +1,30 @@
+name: kabar_app_flutter
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  dartz: ^0.10.1
+  google_fonts: ^4.0.3
+  extended_image: ^7.0.2
+  loading_animation_widget: ^1.2.0+4
+  get_storage: ^2.0.3
+  html: ^0.15.3
+  flutter_widget_from_html: ^0.10.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  assets: 
+    - assets/
+    - assets/images/
+  uses-material-design: true
