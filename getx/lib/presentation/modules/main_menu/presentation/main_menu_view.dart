@@ -27,43 +27,38 @@ class _MainMenuViewState extends State<MainMenuView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MainMenuController>(
-      builder: (MainMenuController c) {
-        return Scaffold(
-          body:
-              PageStorage(bucket: _bucket, child: screens[c.state.currentTab]),
-          bottomNavigationBar: bmnav.BottomNav(
-            index: c.state.currentTab,
-            color: context.bmnavBackgroundColor,
-            labelStyle: bmnav.LabelStyle(
-              visible: true,
-              textStyle: GoogleFonts.poppins(
-                color: context.textColor,
-              ),
-              onSelectTextStyle: TextStyle(
-                color: context.bmnavSelectedColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+      builder: (MainMenuController c) => Scaffold(
+        body: PageStorage(bucket: _bucket, child: screens[c.state.currentTab]),
+        bottomNavigationBar: bmnav.BottomNav(
+          index: c.state.currentTab,
+          color: context.bmnavBackgroundColor,
+          labelStyle: bmnav.LabelStyle(
+            visible: true,
+            textStyle: GoogleFonts.poppins(
+              color: context.textColor,
             ),
-            iconStyle: bmnav.IconStyle(
-              color: context.bmnavUnselectedColor,
-              onSelectColor: context.bmnavSelectedColor,
+            onSelectTextStyle: TextStyle(
+              color: context.bmnavSelectedColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
             ),
-            onTap: (i) {
-              c.setScreen(i);
-            },
-            items: [
-              bmnav.BottomNavItem(CupertinoIcons.home, label: 'Home'),
-              bmnav.BottomNavItem(CupertinoIcons.compass, label: 'Explore'),
-              bmnav.BottomNavItem(CupertinoIcons.bookmark, label: 'Bookmark'),
-              bmnav.BottomNavItem(
-                CupertinoIcons.profile_circled,
-                label: 'Profile',
-              ),
-            ],
           ),
-        );
-      },
+          iconStyle: bmnav.IconStyle(
+            color: context.bmnavUnselectedColor,
+            onSelectColor: context.bmnavSelectedColor,
+          ),
+          onTap: (i) => c.setScreen(i),
+          items: [
+            bmnav.BottomNavItem(CupertinoIcons.home, label: 'Home'),
+            bmnav.BottomNavItem(CupertinoIcons.compass, label: 'Explore'),
+            bmnav.BottomNavItem(CupertinoIcons.bookmark, label: 'Bookmark'),
+            bmnav.BottomNavItem(
+              CupertinoIcons.profile_circled,
+              label: 'Profile',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

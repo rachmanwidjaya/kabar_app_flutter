@@ -38,9 +38,9 @@ class ViewHandler extends StatelessWidget {
           },
         );
       case ViewState.succsess:
-        return child ?? Container();
+        return child ?? const SizedBox();
       default:
-        return Container();
+        return const SizedBox();
     }
   }
 }

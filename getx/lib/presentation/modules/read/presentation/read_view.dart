@@ -39,57 +39,53 @@ class _ReadViewState extends State<ReadView> {
         ],
       ),
       body: GetBuilder<ReadController>(
-        builder: (c) {
-          return ViewHandler(
-            state: c.state,
-            onReload: () async {
-              await c.load();
-            },
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24),
-              children: [
-                ShadowWidget(
-                  child: ImageScreen(c.state.entity.image),
+        builder: (c) => ViewHandler(
+          state: c.state,
+          onReload: () async => await c.load(),
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            children: [
+              ShadowWidget(
+                child: ImageScreen(c.state.entity.image),
+              ),
+              const Padding(padding: EdgeInsets.all(8)),
+              Text(
+                c.state.entity.title,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 24,
+                  letterSpacing: 0.12,
                 ),
-                const Padding(padding: EdgeInsets.all(8)),
-                Text(
-                  c.state.entity.title,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 24,
-                    letterSpacing: 0.12,
-                  ),
+              ),
+              const Padding(padding: EdgeInsets.all(8)),
+              Text(
+                c.state.entity.desc,
+                style: context.textTheme.bodySmall
+                    ?.copyWith(color: context.disabledColor),
+              ),
+              const Padding(padding: EdgeInsets.all(8)),
+              HtmlWidget(
+                c.state.entity.article,
+                textStyle: context.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: context.textColor,
                 ),
-                const Padding(padding: EdgeInsets.all(8)),
-                Text(
-                  c.state.entity.desc,
-                  style: context.textTheme.bodySmall
-                      ?.copyWith(color: context.disabledColor),
-                ),
-                const Padding(padding: EdgeInsets.all(8)),
-                HtmlWidget(
-                  c.state.entity.article,
-                  textStyle: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: context.textColor,
-                  ),
-                  onLoadingBuilder: (context, element, loadingProgress) =>
-                      const Center(child: LoadingWidget()),
-                  onTapUrl: (url) async {
-                    if (Uri.parse(url).pathSegments[1] == 'read') {
-                      Get.offNamed(AppRoutes.readPage(url));
-                    } else if (Uri.parse(url).pathSegments[0] == 'tag') {
-                      Get.offNamed(AppRoutes.tagPage(url));
-                    }
-                    return true;
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+                onLoadingBuilder: (context, element, loadingProgress) =>
+                    const Center(child: LoadingWidget()),
+                onTapUrl: (url) async {
+                  if (Uri.parse(url).pathSegments[1] == 'read') {
+                    Get.offNamed(AppRoutes.readPage(url));
+                  } else if (Uri.parse(url).pathSegments[0] == 'tag') {
+                    Get.offNamed(AppRoutes.tagPage(url));
+                  }
+                  return true;
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

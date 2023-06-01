@@ -24,9 +24,7 @@ class FailedWidget extends StatelessWidget {
           ),
           const Padding(padding: EdgeInsets.all(4)),
           ElevatedButton(
-            onPressed: () {
-              onReload != null ? onReload!() : {};
-            },
+            onPressed: () => onReload != null ? onReload!() : {},
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(context.primaryColor),
               shape: MaterialStateProperty.all(

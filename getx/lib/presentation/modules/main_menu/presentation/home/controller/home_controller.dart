@@ -6,8 +6,8 @@ import '../../../../../../domain/entities/news/home_entity.dart';
 import '../../../../../../domain/repository/news_repository.dart';
 
 class HomeState extends ControllerState {
-  HomeEntity entity;
-  HomeState({HomeEntity? entity}) : entity = entity ?? HomeEntity();
+  HomeEntity data;
+  HomeState({HomeEntity? data}) : data = data ?? HomeEntity();
 }
 
 class HomeController extends GetxController {
@@ -26,7 +26,7 @@ class HomeController extends GetxController {
             update();
           },
           (r) {
-            state.entity = r;
+            state.data = r;
             state.viewState = ViewState.succsess;
             update();
           },
@@ -36,22 +36,22 @@ class HomeController extends GetxController {
   }
 
   Future<void> onTabChange(int indexTab) async {
-    if (state.entity.categories[indexTab].viewState != ViewState.succsess) {
-      state.entity.categories[indexTab].viewState = ViewState.loading;
+    if (state.data.categories[indexTab].viewState != ViewState.succsess) {
+      state.data.categories[indexTab].viewState = ViewState.loading;
       update();
       await repository
-          .loadNewsByCategoryList(state.entity.categories[indexTab].target)
+          .loadNewsByCategoryList(state.data.categories[indexTab].target)
           .then(
         (value) {
           value.fold(
             (l) {
-              state.entity.categories[indexTab].viewState = ViewState.failed;
-              state.entity.categories[indexTab].message = '$l';
+              state.data.categories[indexTab].viewState = ViewState.failed;
+              state.data.categories[indexTab].message = '$l';
               update();
             },
             (r) {
-              state.entity.categories[indexTab].headLineNews = r;
-              state.entity.categories[indexTab].viewState = ViewState.succsess;
+              state.data.categories[indexTab].headLineNews = r;
+              state.data.categories[indexTab].viewState = ViewState.succsess;
               update();
             },
           );

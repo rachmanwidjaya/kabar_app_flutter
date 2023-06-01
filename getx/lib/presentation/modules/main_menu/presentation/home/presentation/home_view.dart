@@ -40,27 +40,18 @@ class _HomeViewState extends State<HomeView>
     return Scaffold(
       appBar: appBarHome(context),
       body: GetBuilder<HomeController>(
-        builder: (c) {
-          return ViewHandler(
+        builder: (c) => ViewHandler(
+          state: c.state,
+          onReload: () async => c.load(),
+          child: _HomeSliver(
             state: c.state,
-            onReload: () async {
-              await c.load();
-            },
-            child: _HomeSliver(
-              state: c.state,
-              key: widget.key,
-              onTabChange: (int indexTab) async {
-                await c.onTabChange(indexTab);
-              },
-              onReloadTab: (int indexTab) async {
-                await c.onTabChange(indexTab);
-              },
-              onItamTap: (entity) {
-                Get.toNamed(AppRoutes.readPage(entity.target));
-              },
-            ),
-          );
-        },
+            key: widget.key,
+            onTabChange: (int indexTab) async => c.onTabChange(indexTab),
+            onReloadTab: (int indexTab) async => await c.onTabChange(indexTab),
+            onItamTap: (entity) =>
+                Get.toNamed(AppRoutes.readPage(entity.target)),
+          ),
+        ),
       ),
     );
   }
@@ -90,7 +81,7 @@ class __HomeSliverState extends State<_HomeSliver>
   @override
   void initState() {
     _tabController = TabController(
-        length: widget.state.entity.categories.length + 1, vsync: this);
+        length: widget.state.data.categories.length + 1, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
     super.initState();
@@ -115,89 +106,74 @@ class __HomeSliverState extends State<_HomeSliver>
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: widget.state.entity.categories.length + 1,
+      length: widget.state.data.categories.length + 1,
       child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  SeacrhBoxWidget(
-                    onSubmitted: (String value) {
-                      Get.toNamed(AppRoutes.searchPage(value));
-                    },
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                SeacrhBoxWidget(
+                  onSubmitted: (String value) =>
+                      Get.toNamed(AppRoutes.searchPage(value)),
+                ),
+                TrendingWidget(
+                  data: widget.state.data.trending,
+                  onItamTap: (NewsEntity entity) => widget.onItamTap(entity),
+                  onSeeAll: () {},
+                ),
+              ],
+            ),
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(
+              TabBar(
+                isScrollable: true,
+                controller: _tabController,
+                indicatorColor: context.primaryColor,
+                labelColor: context.textTheme.bodyLarge?.color,
+                unselectedLabelColor: context.disabledColor,
+                tabs: [
+                  const Tab(
+                    icon: Icon(
+                      CupertinoIcons.home,
+                      size: 14,
+                    ),
                   ),
-                  TrendingWidget(
-                    data: widget.state.entity.trending,
-                    onItamTap: (NewsEntity entity) {
-                      widget.onItamTap(entity);
-                    },
-                    onSeeAll: () {},
+                  ...List<Widget>.from(
+                    widget.state.data.categories.map(
+                      (e) => Tab(
+                        text: e.title,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverAppBarDelegate(
-                TabBar(
-                  isScrollable: true,
-                  controller: _tabController,
-                  indicatorColor: context.primaryColor,
-                  labelColor: context.textTheme.bodyLarge?.color,
-                  unselectedLabelColor: context.disabledColor,
-                  tabs: [
-                    const Tab(
-                      icon: Icon(
-                        CupertinoIcons.home,
-                        size: 14,
-                      ),
-                    ),
-                    ...List.from(
-                      widget.state.entity.categories.map(
-                        (e) => Tab(
-                          text: e.title,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ];
-        },
+          ),
+        ],
         body: TabBarView(
           controller: _tabController,
           children: [
             ListView.builder(
-              itemCount: widget.state.entity.headLineNwes.length,
-              itemBuilder: (contex, index) {
-                return NewsItemWidget(
-                  data: widget.state.entity.headLineNwes[index],
-                  onItamTap: (entity) {
-                    widget.onItamTap(entity);
-                  },
-                );
-              },
+              itemCount: widget.state.data.headLineNwes.length,
+              itemBuilder: (contex, index) => NewsItemWidget(
+                data: widget.state.data.headLineNwes[index],
+                onItamTap: (entity) => widget.onItamTap(entity),
+              ),
             ),
-            ...List.from(
-              widget.state.entity.categories.map(
+            ...List<Widget>.from(
+              widget.state.data.categories.map(
                 (e) => ViewHandler(
                   state: e,
-                  onReload: () {
-                    widget.onReloadTab(_tabController.index - 1);
-                  },
+                  onReload: () => widget.onReloadTab(_tabController.index - 1),
                   child: e.headLineNews.isNotEmpty
                       ? ListView.builder(
                           itemCount: e.headLineNews.length,
-                          itemBuilder: (contex, index) {
-                            return NewsItemWidget(
-                              data: e.headLineNews[index],
-                              onItamTap: (entity) {
-                                widget.onItamTap(entity);
-                              },
-                            );
-                          },
+                          itemBuilder: (contex, index) => NewsItemWidget(
+                            data: e.headLineNews[index],
+                            onItamTap: (entity) => widget.onItamTap(entity),
+                          ),
                         )
                       : const Center(
                           child: Text('No Item'),
@@ -233,7 +209,5 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  bool shouldRebuild(covariant _SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
+  bool shouldRebuild(covariant _SliverAppBarDelegate oldDelegate) => false;
 }

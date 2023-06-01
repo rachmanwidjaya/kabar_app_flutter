@@ -18,7 +18,7 @@ class ShadowWidget extends StatelessWidget {
       shadowColor: context.shadowColor,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius ?? 4),
-        child: child ?? Container(),
+        child: child ?? const SizedBox(),
       ),
     );
   }

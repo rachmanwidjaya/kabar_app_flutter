@@ -18,7 +18,6 @@ class TagController extends GetxController {
     required this.target,
     required this.repository,
   });
-  int _dataPerpage = 0;
 
   TagState state = TagState();
   Future<void> load({
@@ -51,10 +50,10 @@ class TagController extends GetxController {
             (r) {
               state.entity.addAll(r);
               if (state.page == 1) {
-                _dataPerpage = state.entity.length;
+                state.dataPerpage = state.entity.length;
               }
               state.isLastPage =
-                  state.entity.length < (_dataPerpage * state.page) ||
+                  state.entity.length < (state.dataPerpage * state.page) ||
                       state.entity.length < 10;
               state.viewState = ViewState.succsess;
               update();

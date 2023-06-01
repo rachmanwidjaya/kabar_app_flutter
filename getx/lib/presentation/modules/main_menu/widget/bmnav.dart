@@ -239,7 +239,7 @@ class BMNavItem extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(1),
             ),
-            label != null ? Text(label!, style: textStyle) : Container()
+            label != null ? Text(label!, style: textStyle) : const SizedBox()
           ])),
     ));
   }

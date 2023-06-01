@@ -24,27 +24,23 @@ class _SearchViewState extends State<SearchView> {
         elevation: 0,
       ),
       body: GetBuilder<NewsSearchController>(
-        builder: (c) {
-          return ViewHandler(
+        builder: (c) => ViewHandler(
+          state: c.state,
+          onReload: () async => c.load(),
+          child: ListBuilderRefreshLoadMore(
             state: c.state,
-            onReload: () async => c.load(),
-            child: ListBuilderRefreshLoadMore(
-              state: c.state,
-              onRefresh: () async {
-                await c.load();
-              },
-              items: List<Widget>.from(
-                c.state.entity.map(
-                  (e) => NewsItemWidget(
-                    data: e,
-                    onItamTap: (entity) =>
-                        Get.offAndToNamed(AppRoutes.readPage(entity.target)),
-                  ),
+            onRefresh: () async => c.load(),
+            items: List<Widget>.from(
+              c.state.entity.map(
+                (e) => NewsItemWidget(
+                  data: e,
+                  onItamTap: (entity) =>
+                      Get.offAndToNamed(AppRoutes.readPage(entity.target)),
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

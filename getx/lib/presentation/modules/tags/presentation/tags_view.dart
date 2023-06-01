@@ -25,38 +25,28 @@ class _TagViewState extends State<TagView> {
         elevation: 0,
       ),
       body: GetBuilder<TagController>(
-        builder: (c) {
-          return ViewHandler(
+        builder: (c) => ViewHandler(
+          state: c.state,
+          onReload: () async => c.load(page: 1),
+          child: ListBuilderRefreshLoadMore(
             state: c.state,
-            onReload: () async => c.load(),
-            child: ListBuilderRefreshLoadMore(
-              state: c.state,
-              onLoadMore: () async {
-                await c.load(
-                  page: c.state.page,
-                  onError: (message) {
-                    Get.snackbar('Error', message);
-                  },
-                );
-              },
-              onRefresh: () async {
-                await c.load(
-                  onError: (message) {
-                    Get.snackbar('Error', message);
-                  },
-                );
-              },
-              items: List<Widget>.from(
-                c.state.entity.map(
-                  (e) => NewsItemWidget(
-                      data: e,
-                      onItamTap: (entity) =>
-                          Get.offAndToNamed(AppRoutes.readPage(entity.target))),
+            onLoadMore: () async => await c.load(
+              page: c.state.page,
+              onError: (message) => Get.snackbar('Error', message),
+            ),
+            onRefresh: () async => await c.load(page: 1),
+            items: List<Widget>.from(
+              c.state.entity.map(
+                (e) => NewsItemWidget(
+                  data: e,
+                  onItamTap: (entity) => Get.offAndToNamed(
+                    AppRoutes.readPage(entity.target),
+                  ),
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

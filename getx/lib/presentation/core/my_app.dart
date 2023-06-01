@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context, child) => AppView(
             state: c.state,
             child: AuthHandleView(
-              siAuthorized: c.state.userEntity != null,
+              isAuthorized: c.state.userEntity != null,
               child: child,
             ),
           ),

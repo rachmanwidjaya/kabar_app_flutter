@@ -41,284 +41,282 @@ class _LoginViewState extends State<LoginView> {
         elevation: 0,
       ),
       body: GetBuilder<LoginController>(
-        builder: (c) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                Column(
+        builder: (c) => SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello',
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontSize: 48,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    'Again!',
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontSize: 48,
+                      color: context.primaryColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    'Welcome back you’ve been missed',
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.all(24)),
+              Form(
+                key: _formKey,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Hello',
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontSize: 48,
-                        fontWeight: FontWeight.w700,
+                    Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Username',
+                              style: context.textTheme.bodySmall,
+                            ),
+                            const Padding(padding: EdgeInsets.all(4)),
+                            TextFormField(
+                              decoration: _decoration,
+                              controller: _usernameController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your username.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                        const Padding(padding: EdgeInsets.all(8)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Password',
+                              style: context.textTheme.bodySmall,
+                            ),
+                            const Padding(padding: EdgeInsets.all(4)),
+                            TextFormField(
+                              decoration: _decoration,
+                              controller: _passwordController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password.';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters.';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    c.state.viewState == ViewState.failed
+                        ? Card(
+                            margin: const EdgeInsets.symmetric(vertical: 12),
+                            color: AppColors.instance.errorDark,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              width: context.sizeWidth,
+                              child: Text(
+                                c.state.message,
+                                textAlign: TextAlign.center,
+                                style: context.textTheme.bodySmall
+                                    ?.copyWith(color: Colors.white),
+                                // c.state.message,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Checkbox(
+                                  value: true,
+                                  activeColor: context.primaryColor,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                              const Padding(padding: EdgeInsets.all(4)),
+                              Text(
+                                'Remember me',
+                                style: context.textTheme.bodySmall,
+                              )
+                            ],
+                          ),
+                          Text(
+                            'Forgot the password ?',
+                            style: context.textTheme.bodySmall
+                                ?.copyWith(color: context.primaryColor),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      'Again!',
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontSize: 48,
-                        color: context.primaryColor,
-                        fontWeight: FontWeight.w700,
+                    const Padding(padding: EdgeInsets.all(8)),
+                    ElevatedButton(
+                      onPressed: c.state.viewState == ViewState.loading
+                          ? null
+                          : () async {
+                              await c.signIn();
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: context.primaryColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                          width: context.sizeWidth,
+                          child: Center(
+                            child: c.state.viewState == ViewState.loading
+                                ? const LoadingWidget()
+                                : Text(
+                                    'Login',
+                                    style: context.textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.white),
+                                  ),
+                          ),
+                        ),
                       ),
                     ),
-                    Text(
-                      'Welcome back you’ve been missed',
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Center(
+                      child: Text(
+                        'or continue with',
+                        style: context.textTheme.bodySmall,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.all(8)),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: (context.sizeWidth / 2) - 32,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(238, 241, 244, 1),
+                            ),
+                            onPressed: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  const ImageScreen(
+                                    'https://i.postimg.cc/Z538pzMv/fb.png',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const Padding(padding: EdgeInsets.all(4)),
+                                  Text(
+                                    'Facebook',
+                                    style:
+                                        context.textTheme.bodyLarge?.copyWith(
+                                      fontSize: 15,
+                                      color: const Color.fromRGBO(
+                                        102,
+                                        112,
+                                        128,
+                                        1,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(8)),
+                        SizedBox(
+                          width: (context.sizeWidth / 2) - 32,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(238, 241, 244, 1),
+                            ),
+                            onPressed: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  const ImageScreen(
+                                    'https://i.postimg.cc/V642jVNn/google.png',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const Padding(padding: EdgeInsets.all(4)),
+                                  Text(
+                                    'Google',
+                                    style:
+                                        context.textTheme.bodyLarge?.copyWith(
+                                      fontSize: 15,
+                                      color: const Color.fromRGBO(
+                                        102,
+                                        112,
+                                        128,
+                                        1,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.all(8)),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'don’t have an account',
+                            style: context.textTheme.bodySmall,
+                          ),
+                          const Padding(padding: EdgeInsets.all(4)),
+                          Text(
+                            'Sign Up',
+                            style: context.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: context.primaryColor,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const Padding(padding: EdgeInsets.all(24)),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Username',
-                                style: context.textTheme.bodySmall,
-                              ),
-                              const Padding(padding: EdgeInsets.all(4)),
-                              TextFormField(
-                                decoration: _decoration,
-                                controller: _usernameController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your username.';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                          const Padding(padding: EdgeInsets.all(8)),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Password',
-                                style: context.textTheme.bodySmall,
-                              ),
-                              const Padding(padding: EdgeInsets.all(4)),
-                              TextFormField(
-                                decoration: _decoration,
-                                controller: _passwordController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your password.';
-                                  }
-                                  if (value.length < 6) {
-                                    return 'Password must be at least 6 characters.';
-                                  }
-                                  return null;
-                                },
-                                obscureText: true,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      c.state.viewState == ViewState.failed
-                          ? Card(
-                              margin: const EdgeInsets.symmetric(vertical: 12),
-                              color: AppColors.instance.errorDark,
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                width: context.sizeWidth,
-                                child: Text(
-                                  c.state.message,
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.bodySmall
-                                      ?.copyWith(color: Colors.white),
-                                  // c.state.message,
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: Checkbox(
-                                    value: true,
-                                    activeColor: context.primaryColor,
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                const Padding(padding: EdgeInsets.all(4)),
-                                Text(
-                                  'Remember me',
-                                  style: context.textTheme.bodySmall,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Forgot the password ?',
-                              style: context.textTheme.bodySmall
-                                  ?.copyWith(color: context.primaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.all(8)),
-                      ElevatedButton(
-                        onPressed: c.state.viewState == ViewState.loading
-                            ? null
-                            : () async {
-                                await c.signIn();
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.primaryColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: SizedBox(
-                            width: context.sizeWidth,
-                            child: Center(
-                              child: c.state.viewState == ViewState.loading
-                                  ? const LoadingWidget()
-                                  : Text(
-                                      'Login',
-                                      style: context.textTheme.bodyLarge
-                                          ?.copyWith(color: Colors.white),
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Center(
-                        child: Text(
-                          'or continue with',
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.all(8)),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: (context.sizeWidth / 2) - 32,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(238, 241, 244, 1),
-                              ),
-                              onPressed: () {},
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  children: [
-                                    const ImageScreen(
-                                      'https://i.postimg.cc/Z538pzMv/fb.png',
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    const Padding(padding: EdgeInsets.all(4)),
-                                    Text(
-                                      'Facebook',
-                                      style:
-                                          context.textTheme.bodyLarge?.copyWith(
-                                        fontSize: 15,
-                                        color: const Color.fromRGBO(
-                                          102,
-                                          112,
-                                          128,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.all(8)),
-                          SizedBox(
-                            width: (context.sizeWidth / 2) - 32,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(238, 241, 244, 1),
-                              ),
-                              onPressed: () {},
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  children: [
-                                    const ImageScreen(
-                                      'https://i.postimg.cc/V642jVNn/google.png',
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    const Padding(padding: EdgeInsets.all(4)),
-                                    Text(
-                                      'Google',
-                                      style:
-                                          context.textTheme.bodyLarge?.copyWith(
-                                        fontSize: 15,
-                                        color: const Color.fromRGBO(
-                                          102,
-                                          112,
-                                          128,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(padding: EdgeInsets.all(8)),
-                      Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'don’t have an account',
-                              style: context.textTheme.bodySmall,
-                            ),
-                            const Padding(padding: EdgeInsets.all(4)),
-                            Text(
-                              'Sign Up',
-                              style: context.textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: context.primaryColor,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

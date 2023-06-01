@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import '../modules/login/presentation/login_view.dart';
 
 class AuthHandleView extends StatelessWidget {
-  final bool siAuthorized;
+  final bool isAuthorized;
   final Widget? child;
   final Widget? unAuthorizedWidget;
   const AuthHandleView({
     super.key,
-    required this.siAuthorized,
+    required this.isAuthorized,
     this.child,
     this.unAuthorizedWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    return siAuthorized
+    return isAuthorized
         ? child ?? const SizedBox()
         : unAuthorizedWidget ?? const LoginView();
   }
