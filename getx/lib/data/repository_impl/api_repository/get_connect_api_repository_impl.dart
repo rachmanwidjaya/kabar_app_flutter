@@ -8,18 +8,19 @@ import '../../../core/exceptions/fetch_data_exeption.dart';
 import '../../../domain/repository/api_repository.dart';
 
 class GetConnectApiRepositoryImpl implements ApiRepository {
-  static const requestTimeOut = Duration(seconds: 10);
-  static final _singleton = GetConnectApiRepositoryImpl();
+  static const Duration requestTimeOut = Duration(seconds: 10);
+  static final GetConnectApiRepositoryImpl _singleton =
+      GetConnectApiRepositoryImpl();
   static GetConnectApiRepositoryImpl get instance => _singleton;
 
-  final _httpClient = GetConnect();
+  final GetConnect _httpClient = GetConnect();
 
   @override
   Future<String> request(String endPoint,
       {HTTPMethod? method, Map<String, String>? headers, body}) async {
     log(endPoint, name: '${method ?? HTTPMethod.get}');
     try {
-      final request = _httpClient.request(
+      final Future<Response<dynamic>> request = _httpClient.request(
         endPoint,
         method != null
             ? method.toMethodString()
@@ -30,7 +31,7 @@ class GetConnectApiRepositoryImpl implements ApiRepository {
 
       request.timeout(requestTimeOut);
 
-      final response = await request;
+      final Response<dynamic> response = await request;
       return handleResponse(
           response.statusCode ?? 0, response.bodyString ?? '');
     } on TimeoutException catch (e, s) {

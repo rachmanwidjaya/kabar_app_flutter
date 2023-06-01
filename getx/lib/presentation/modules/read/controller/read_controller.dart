@@ -31,7 +31,7 @@ class ReadController extends GetxController {
           },
           (r) {
             state.entity = r;
-            state.viewState = ViewState.succsess;
+            state.viewState = ViewState.success;
             update();
           },
         );

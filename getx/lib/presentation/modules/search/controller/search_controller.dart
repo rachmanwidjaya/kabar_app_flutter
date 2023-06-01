@@ -34,7 +34,7 @@ class NewsSearchController extends GetxController {
             },
             (r) {
               state.entity = r;
-              state.viewState = ViewState.succsess;
+              state.viewState = ViewState.success;
               state.loadComplete = true;
               update();
             },

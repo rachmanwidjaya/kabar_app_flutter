@@ -1,4 +1,4 @@
-import 'package:kabar_app_getx/utils/extensions/centext_extension.dart';
+import 'package:kabar_app_getx/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 final Color? defaultColor = Colors.grey[700];

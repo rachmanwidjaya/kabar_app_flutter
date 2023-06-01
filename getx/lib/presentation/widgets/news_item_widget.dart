@@ -1,4 +1,4 @@
-import 'package:kabar_app_getx/utils/extensions/centext_extension.dart';
+import 'package:kabar_app_getx/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/news/news_entity.dart';

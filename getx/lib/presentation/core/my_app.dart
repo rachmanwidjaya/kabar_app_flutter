@@ -32,25 +32,23 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CoreController>(
-      builder: (CoreController c) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Kabar',
-          theme: LocalConfig.instance.darkTheme
-              ? AppTheme.darkTheme
-              : AppTheme.lightTheme,
-          getPages: AppPages.routes,
-          initialRoute: AppPages.inital,
-          builder: (context, child) => AppView(
-            state: c.state,
-            child: AuthHandleView(
-              isAuthorized: c.state.userEntity != null,
-              child: child,
-            ),
+      builder: (CoreController c) => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Kabar',
+        theme: LocalConfig.instance.darkTheme
+            ? AppTheme.darkTheme
+            : AppTheme.lightTheme,
+        getPages: AppPages.routes,
+        initialRoute: AppPages.inital,
+        builder: (context, child) => AppView(
+          state: c.state,
+          child: AuthHandleView(
+            isAuthorized: c.state.userEntity != null,
+            child: child,
           ),
-          unknownRoute: AppPages.notFound,
-        );
-      },
+        ),
+        unknownRoute: AppPages.notFound,
+      ),
     );
   }
 }

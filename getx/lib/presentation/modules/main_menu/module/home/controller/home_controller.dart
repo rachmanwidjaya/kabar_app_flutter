@@ -27,7 +27,7 @@ class HomeController extends GetxController {
           },
           (r) {
             state.data = r;
-            state.viewState = ViewState.succsess;
+            state.viewState = ViewState.success;
             update();
           },
         );
@@ -36,7 +36,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> onTabChange(int indexTab) async {
-    if (state.data.categories[indexTab].viewState != ViewState.succsess) {
+    if (state.data.categories[indexTab].viewState != ViewState.success) {
       state.data.categories[indexTab].viewState = ViewState.loading;
       update();
       await repository
@@ -51,7 +51,7 @@ class HomeController extends GetxController {
             },
             (r) {
               state.data.categories[indexTab].headLineNews = r;
-              state.data.categories[indexTab].viewState = ViewState.succsess;
+              state.data.categories[indexTab].viewState = ViewState.success;
               update();
             },
           );

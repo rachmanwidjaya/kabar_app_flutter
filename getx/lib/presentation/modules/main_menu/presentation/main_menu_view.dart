@@ -1,12 +1,12 @@
-import 'package:kabar_app_getx/utils/extensions/centext_extension.dart';
+import 'package:kabar_app_getx/utils/extensions/context_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../widgets/image_screen.dart';
-import 'home/presentation/home_view.dart';
-import 'profile/presentation/profile_view.dart';
 import '../controller/main_menu_controller.dart';
+import '../module/home/presentation/home_view.dart';
+import '../module/profile/presentation/profile_view.dart';
 import '../widget/bmnav.dart' as bmnav;
 
 class MainMenuView extends StatefulWidget {

@@ -5,13 +5,13 @@ import '../middleware/auth_middleware.dart';
 import '../middleware/is_authorized_middleware.dart';
 import '../modules/login/presentation/login_view.dart';
 import '../modules/main_menu/controller/main_menu_binding.dart';
+import '../modules/settings/controller/setting_binding.dart';
+import '../modules/settings/presentation/settings_view.dart';
 import '../modules/main_menu/presentation/main_menu_view.dart';
 import '../modules/read/controller/read_binding.dart';
 import '../modules/read/presentation/read_view.dart';
 import '../modules/search/controller/search_binding.dart';
 import '../modules/search/presentation/search_view.dart';
-import '../modules/main_menu/presentation/settings/controller/setting_binding.dart';
-import '../modules/main_menu/presentation/settings/presentation/settings_view.dart';
 import '../modules/tags/controller/tag_binding.dart';
 import '../modules/tags/presentation/tags_view.dart';
 

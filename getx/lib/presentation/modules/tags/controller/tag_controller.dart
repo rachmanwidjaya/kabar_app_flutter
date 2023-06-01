@@ -25,7 +25,6 @@ class TagController extends GetxController {
     void Function(String message)? onError,
   }) async {
     if (page == 1) {
-      state.viewState = ViewState.loading;
       state.page = 1;
       state.entity = [];
     }
@@ -43,19 +42,18 @@ class TagController extends GetxController {
                 update();
               } else {
                 onError != null ? onError('$l') : {};
-                state.loadComplete = true;
                 update();
               }
             },
             (r) {
-              state.entity.addAll(r);
               if (state.page == 1) {
-                state.dataPerpage = state.entity.length;
+                state.dataPerpage = r.length;
               }
+              state.entity.addAll(r);
               state.isLastPage =
                   state.entity.length < (state.dataPerpage * state.page) ||
                       state.entity.length < 10;
-              state.viewState = ViewState.succsess;
+              state.viewState = ViewState.success;
               update();
               state.page++;
             },

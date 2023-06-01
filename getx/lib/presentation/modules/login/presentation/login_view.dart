@@ -1,4 +1,4 @@
-import 'package:kabar_app_getx/utils/extensions/centext_extension.dart';
+import 'package:kabar_app_getx/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide ContextExtensionss;
 
@@ -184,9 +184,7 @@ class _LoginViewState extends State<LoginView> {
                     ElevatedButton(
                       onPressed: c.state.viewState == ViewState.loading
                           ? null
-                          : () async {
-                              await c.signIn();
-                            },
+                          : () async => await c.signIn(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: context.primaryColor,
                       ),

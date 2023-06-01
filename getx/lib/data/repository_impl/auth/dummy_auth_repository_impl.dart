@@ -39,8 +39,7 @@ class DummyAuthRepositiryImpl implements AuthRepository {
       await Future.delayed(const Duration(seconds: 2));
       return Right(UserModel.dummyUser());
     } catch (e, s) {
-      return Left(
-          AppException(message: 'signIn Failed', error: e, stackTrace: s));
+      return Left(AppException(message: '$e', error: e, stackTrace: s));
     }
   }
 }

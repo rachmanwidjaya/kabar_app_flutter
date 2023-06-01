@@ -28,7 +28,7 @@ class CoreController extends GetxController {
 
   final CoreControllerState state = CoreControllerState();
 
-  Future<void> load() async {
+  Future<void> _load() async {
     state.appState = AppState.loading;
     state.message = 'Loading...';
     update();
@@ -44,7 +44,7 @@ class CoreController extends GetxController {
             state.appState = remoteConfig.toAppState;
 
             if (state.appState == AppState.ready) {
-              await initAuth();
+              await _initAuth();
             }
             update();
           },
@@ -53,7 +53,7 @@ class CoreController extends GetxController {
     );
   }
 
-  Future<void> initAuth() async {
+  Future<void> _initAuth() async {
     await authRepository.validate().then(
       (auth) {
         auth.fold(
@@ -103,7 +103,7 @@ class CoreController extends GetxController {
 
   @override
   void onInit() {
-    load();
+    _load();
     super.onInit();
   }
 }

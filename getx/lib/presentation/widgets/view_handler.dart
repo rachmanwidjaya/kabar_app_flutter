@@ -1,4 +1,4 @@
-import 'package:kabar_app_getx/utils/extensions/centext_extension.dart';
+import 'package:kabar_app_getx/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/enum/view_state.dart';
@@ -32,12 +32,10 @@ class ViewHandler extends StatelessWidget {
           message: state.message,
           texColor: context.textColor,
           onReload: () {
-            try {
-              onReload!();
-            } catch (_) {}
+            onReload != null ? onReload!() : {};
           },
         );
-      case ViewState.succsess:
+      case ViewState.success:
         return child ?? const SizedBox();
       default:
         return const SizedBox();
